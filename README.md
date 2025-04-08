@@ -140,3 +140,7 @@ MyBatis Framework
 	MyBatis는 기존 JDBC 방식과는 달리 SQL문을 XML파일에 작성함으로써 코드가 줄어들고,
 	SQL문 수정이 편해진다.
 
+<img src="https://github.com/user-attachments/assets/970f3c78-cb0f-4845-a92c-e25472713d50"/>
+
+ 
+
