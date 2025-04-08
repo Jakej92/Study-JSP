@@ -1,0 +1,32 @@
+package com.app.controller.post;
+
+import java.io.IOException;
+
+import com.app.Action;
+import com.app.Result;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+public class PostDetailController implements Action  {
+	@Override
+	public Result execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		
+        Long id =  req.getSession().getAttribute("id");
+       
+
+        // 3️⃣ ID가 정상적으로 들어왔는지 확인
+        System.out.println("📌 최종 받은 게시글 ID (Long): " + id);
+
+        // 세션에 id 저장 (필요한 경우)
+        req.getSession().setAttribute("id", id);
+		
+        Result result = new Result();
+        result.setPath("/templates/post/detail.jsp");  // 상세 페이지 경로
+        result.setForward(true);  // forward 방식으로 이동
+
+        return result;
+	}
+}

@@ -1,0 +1,59 @@
+<%@page import="com.app.domain.vo.AdminVO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>마이페이지</title>
+<style>
+	#check {
+		color: red;
+	}
+</style>
+</head>
+<body>
+	<% 
+		AdminVO admin = (AdminVO)request.getAttribute("admin");
+		String account = request.getParameter("account");
+	%>
+	
+	<a href="/logout.admin">로그아웃</a>
+	<a href="/write.post">게시글 작성</a>
+	<a href="/list.post">게시글</a>
+	<h1><%=admin.getAdminName()%>님 환영합니다.</h1>
+	<form action="/update-ok.member" method="post">
+		<div>
+			<input type="text" name="adminAccount" value="<%=admin.getAdminAccount()%>">
+		</div>
+		<%if(account != null) {%>
+		<div>
+			<p id="check">
+				이미 존재하는 아이디입니다.
+			</p>
+		<%} %>
+		</div>
+		<div>
+			<input type="text" name="adminName" value="<%=admin.getAdminName()%>">
+		</div>
+		<div>
+			<input type="text" name="adminPhone" value="<%=admin.getAdminPhone()%>">
+		</div>
+		<div>
+			<input type="text" name="adminEmail" value="<%=admin.getAdminEmail()%>">
+		</div>
+		
+		<button>수정 완료</button>
+	</form>
+	<a href="/delete-ok.member">회원 탈퇴</a>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

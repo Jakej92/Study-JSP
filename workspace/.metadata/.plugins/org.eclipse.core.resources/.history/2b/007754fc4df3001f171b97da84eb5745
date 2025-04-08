@@ -1,0 +1,53 @@
+package com.app.controller.member;
+
+import java.io.IOException;
+
+import com.app.Action;
+import com.app.Result;
+import com.app.domain.vo.MemberVO;
+import com.app.repository.member.MemberDAO;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+//	회원가입이 완료되면 실행되는 클래스
+//	Action 인터페이스를 구현하여 execute 메서드를 오버라이딩함
+public class JoinOkController implements Action {
+
+	@Override
+	public Result execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		Result result = new Result(); // 결과 데이터를 저장할 Result 객체 생성
+		MemberVO memberVO = new MemberVO(); // 결과 데이터를 저장할 MemberVO 객체 생성
+		MemberDAO memberDAO = new MemberDAO(); // 데이터베이스 연동을 위한 MemberDAO 객체 생성
+		
+//		이름이 memberEmail인 인풋에 입력된 값을 문자열 타입의 memberEamil에 넣어줌 아래도 같음
+		String memberEmail = req.getParameter("memberEmail");
+		String memberPassword = req.getParameter("memberPassword");
+		String memberName = req.getParameter("memberName");
+//		이름이 memberAge인 인풋에 입력된 값을 정수형 memberAge에 담는데 타입이달라서
+//		형변환을 해주고 담아줌
+		int memberAge = Integer.parseInt(req.getParameter("memberAge"));
+		String memberGender = req.getParameter("memberGender");
+		
+//		위에 담아준 값들을 memberVO에 setter를 이용해서 저장해줌.
+		memberVO.setMemberEmail(memberEmail);
+		memberVO.setMemberPassword(memberPassword);
+		memberVO.setMemberName(memberName);
+		memberVO.setMemberAge(memberAge);
+		memberVO.setMemberGender(memberGender);
+		
+//		각 값들이 저장된 memberVO를 memberDAO insert 메서드에 담고 사용.
+		memberDAO.insert(memberVO);
+//		메서드가 잘 실행되어 insert가 되면 다음 경로로 이동하기위해 result에 경로를 담아줌.
+		result.setPath("/login.member");
+//		result를 반환해줌.
+		return result;
+	}
+}
+
+
+
+
+
+
+

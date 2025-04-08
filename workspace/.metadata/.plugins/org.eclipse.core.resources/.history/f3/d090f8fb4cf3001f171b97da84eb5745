@@ -1,0 +1,48 @@
+package com.app.controller.member;
+
+import java.io.IOException;
+
+import com.app.Action;
+import com.app.Result;
+import com.app.domain.vo.MemberVO;
+import com.app.repository.member.MemberDAO;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+//	회원가입이 완료되면 실행되는 클래스
+//	Action 인터페이스에 execute 메서드를 재구현 하여 사용
+public class JoinOkController implements Action {
+
+	@Override
+	public Result execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		Result result = new Result();
+		MemberVO memberVO = new MemberVO();
+		MemberDAO memberDAO = new MemberDAO();
+		
+		String memberEmail = req.getParameter("memberEmail");
+		String memberPassword = req.getParameter("memberPassword");
+		String memberName = req.getParameter("memberName");
+		int memberAge = Integer.parseInt(req.getParameter("memberAge"));
+		String memberGender = req.getParameter("memberGender");
+		
+		memberVO.setMemberEmail(memberEmail);
+		memberVO.setMemberPassword(memberPassword);
+		memberVO.setMemberName(memberName);
+		memberVO.setMemberAge(memberAge);
+		memberVO.setMemberGender(memberGender);
+		
+		memberDAO.insert(memberVO);
+		
+		result.setPath("/login.member");
+		
+		return result;
+	}
+}
+
+
+
+
+
+
+

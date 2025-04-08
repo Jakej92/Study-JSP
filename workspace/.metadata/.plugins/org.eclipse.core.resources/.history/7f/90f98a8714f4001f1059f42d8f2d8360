@@ -1,0 +1,5 @@
+package com.app.domain.vo;
+
+public class AdminVO {
+
+}

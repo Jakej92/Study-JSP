@@ -1,0 +1,62 @@
+package com.app.controller.admin;
+
+import java.io.IOException;
+import java.util.Optional;
+
+import com.app.Action;
+import com.app.Result;
+import com.app.domain.vo.AdminVO;
+import com.app.repository.admin.AdminDAO;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
+public class JoinOkController implements Action {
+	
+	@Override
+	public Result execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	    System.out.println("🚀 JoinOkController 실행됨!");
+
+	    Result result = new Result();
+	    AdminDAO adminDAO = new AdminDAO();
+	    AdminVO adminVO = new AdminVO();
+	    HttpSession session = req.getSession();
+
+	    // ✅ 요청된 파라미터 가져오기
+	    String adminAccount = req.getParameter("adminAccount");
+	    String adminPassword = req.getParameter("adminPassword");
+	    String adminName = req.getParameter("adminName");
+	    String adminPhone = req.getParameter("adminPhone");
+	    String adminEmail = req.getParameter("adminEmail");
+
+	    adminVO.setAdminAccount(adminAccount);
+	    adminVO.setAdminPassword(adminPassword);
+	    adminVO.setAdminName(adminName);
+	    adminVO.setAdminPhone(adminPhone);
+	    adminVO.setAdminEmail(adminEmail);
+
+	    boolean accountFlag = false;
+
+	    // ✅ 중복 계정 검사
+	    Optional<AdminVO> foundAdmin = adminDAO.selectByAdminAccount(adminAccount);
+	    if (foundAdmin.isPresent()) {
+	        System.out.println("❌ 중복된 계정이 있습니다. 회원가입 불가.");
+	        result.setPath("/join.admin?account=false");  // 🔥 중복 계정이 있으면 다시 회원가입 페이지로 이동
+	        result.setForward(true);
+	        return result;
+	    }
+
+	    // ✅ 중복 계정이 없으면 회원가입 진행
+	    adminDAO.insert(adminVO);
+	    System.out.println("✅ 회원가입 성공! 관리자 계정 추가됨.");
+
+	    // ✅ 회원가입 성공 후 세션에 관리자 정보 저장
+	    session.setAttribute("admin", adminVO);
+
+	    result.setPath("/login.admin");  // 🔥 회원가입 성공 시 로그인 페이지로 이동
+	    return result;
+	}
+
+}

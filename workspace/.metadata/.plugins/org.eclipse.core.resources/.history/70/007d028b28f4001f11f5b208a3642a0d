@@ -1,0 +1,72 @@
+package com.app.controller.admin;
+
+import java.io.IOException;
+
+import com.app.Result;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+public class AdminFrontController extends HttpServlet {
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String uri = req.getRequestURI();
+		String target = uri.substring(0, uri.lastIndexOf(".")).replace(req.getContextPath(), "");
+		Result result = null;
+		
+		if(target.equals("/join")) {
+			result = new JoinController().execute(req, resp);
+		}else if(target.equals("/join-ok")) {
+			result = new JoinOkController().execute(req, resp);
+		}
+		
+		
+
+		    // 🔥 요청 로그 추가
+		    System.out.println("📌 요청된 URI: " + uri);
+		    System.out.println("📌 Context Path: " + req.getContextPath());
+		    System.out.println("📌 Target: " + target);
+
+
+		    if(target.equals("/join")) {
+		        System.out.println("✅ /join 요청 감지! JoinController 실행...");
+		        result = new JoinController().execute(req, resp);
+		    } else if(target.equals("/join-ok")) {
+		        System.out.println("✅ /join-ok 요청 감지! JoinOkController 실행...");
+		        result = new JoinOkController().execute(req, resp);
+		    }
+
+		    if(result != null) {
+		        if(result.isForward()) {
+		            System.out.println("➡ Forward 방식으로 이동: " + result.getPath());
+		            req.getRequestDispatcher(result.getPath()).forward(req, resp);
+		        } else {
+		            System.out.println("➡ Redirect 방식으로 이동: " + result.getPath());
+		            resp.sendRedirect(result.getPath());
+		        }
+		    } else {
+		        System.out.println("❌ 해당 요청을 처리할 컨트롤러가 없음: " + target);
+		        resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+		    }
+
+		
+		
+		
+		
+		if(result != null) {
+			if(result.isForward()) {
+				req.getRequestDispatcher(result.getPath()).forward(req, resp);
+			}else {
+				resp.sendRedirect(result.getPath());
+			}
+		}
+	}
+	
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doGet(req, resp);
+	}
+}

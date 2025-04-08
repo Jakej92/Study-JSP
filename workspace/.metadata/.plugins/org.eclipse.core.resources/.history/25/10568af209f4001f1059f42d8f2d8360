@@ -1,0 +1,40 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>관리자 등록</title>
+</head>
+<body>
+	<form action="/join-ok.admin" method="post" name="admin-form">
+		<div>
+			<input type="text" name="adminAccount" placeholder="아이디 입력">
+		</div>
+		<div>
+			<input type="password" name="adminPassword" placeholder="비밀번호 입력">
+		</div>
+		<div>
+			<input type="text" name="adminName" placeholder="이름 입력">
+		</div>
+		<div>
+			<input type="text" name="adminAge" placeholder="나이 입력">
+		</div>
+		<div>
+			<input type="text" name="adminPhone" placeholder="전화번호 입력">
+		</div>
+		<label>
+			<input type="radio" name="adminGender" value="남자"> 남자
+		</label>
+		<label>
+			<input type="radio" name="adminGender" value="여자"> 여자
+		</label>
+		<label>
+			<input type="radio" name="adminGender" value="선택 안함" checked> 선택 안함
+		</label>
+		<div>
+			<button>관리자 추가</button>
+		</div>
+	</form>
+</body>
+</html>

@@ -1,0 +1,5 @@
+package com.app.repository.admin;
+
+public class AdminDAO {
+
+}

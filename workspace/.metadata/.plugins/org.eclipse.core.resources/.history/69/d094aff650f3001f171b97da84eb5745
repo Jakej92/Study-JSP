@@ -1,0 +1,49 @@
+package com.app.controller.member;
+
+import java.io.IOException;
+import java.util.Optional;
+
+import com.app.Action;
+import com.app.Result;
+import com.app.domain.vo.MemberVO;
+import com.app.exception.LoginFailException;
+import com.app.repository.member.MemberDAO;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+//	로그인에 성공했을시 실행될 클래스
+public class LoginOkController implements Action{
+	@Override
+	public Result execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		Result result = new Result(); // 결과 데이터를 저장할 Result 객체 생성
+		// 클라이언트의 기존 세션을 가져오거나, 없으면 새로운 세션을 생성하여 session 변수에 저장
+		HttpSession session = req.getSession(); 
+		MemberDAO memberDAO = new MemberDAO();
+		MemberVO memberVO = new MemberVO();
+		MemberVO member = null;
+		String path = null;
+		
+		String memberEmail = req.getParameter("memberEmail");
+		String memberPassword = req.getParameter("memberPassword");
+		
+		memberVO.setMemberEmail(memberEmail);
+		memberVO.setMemberPassword(memberPassword);
+		
+		Optional<MemberVO> foundMember = memberDAO.selectByMemberEmailAndMemberPassword(memberVO);
+		
+		try {
+			member = foundMember.orElseThrow(() -> {throw new LoginFailException();});
+			session.setAttribute("member", member);
+			path = "/mypage.member";
+		} catch (LoginFailException e) {
+			System.out.println("로그인 실패");
+			path = "/login.member?login=false";
+		}
+		
+		result.setPath(path);
+		
+		return result;
+	}
+}

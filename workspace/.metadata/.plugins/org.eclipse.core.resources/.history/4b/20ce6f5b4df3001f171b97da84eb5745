@@ -1,0 +1,48 @@
+package com.app.controller.member;
+
+import java.io.IOException;
+
+import com.app.Action;
+import com.app.Result;
+import com.app.domain.vo.MemberVO;
+import com.app.repository.member.MemberDAO;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+//	회원가입이 완료되면 실행되는 클래스
+//	Action 인터페이스를 구현하여 execute 메서드를 오버라이딩함
+public class JoinOkController implements Action {
+
+	@Override
+	public Result execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		Result result = new Result(); // 결과 데이터를 저장할 Result 객체 생성
+		MemberVO memberVO = new MemberVO(); // 결과 데이터를 저장할 MemberVO 객체 생성
+		MemberDAO memberDAO = new MemberDAO(); // 메서드를 사용하기위해 MemberDAO를 객체화 해줌
+		
+		String memberEmail = req.getParameter("memberEmail");
+		String memberPassword = req.getParameter("memberPassword");
+		String memberName = req.getParameter("memberName");
+		int memberAge = Integer.parseInt(req.getParameter("memberAge"));
+		String memberGender = req.getParameter("memberGender");
+		
+		memberVO.setMemberEmail(memberEmail);
+		memberVO.setMemberPassword(memberPassword);
+		memberVO.setMemberName(memberName);
+		memberVO.setMemberAge(memberAge);
+		memberVO.setMemberGender(memberGender);
+		
+		memberDAO.insert(memberVO);
+		
+		result.setPath("/login.member");
+		
+		return result;
+	}
+}
+
+
+
+
+
+
+

@@ -1,0 +1,27 @@
+package com.app.controller.post;
+
+import java.io.IOException;
+
+import com.app.Action;
+import com.app.Result;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+public class PostDetailController implements Action  {
+	@Override
+	public Result execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String idParam = req.getParameter("id");
+
+        // ID가 정상적으로 넘어오는지 확인 (테스트)
+        System.out.println("받은 게시글 ID: " + idParam);
+
+        // Result 객체를 생성하여 상세 페이지로 이동 설정
+        Result result = new Result();
+        result.setPath("/templates/post/detail.jsp");  // 상세 페이지 경로
+        result.setForward(true);  // forward 방식으로 이동
+
+        return result;
+	}
+}

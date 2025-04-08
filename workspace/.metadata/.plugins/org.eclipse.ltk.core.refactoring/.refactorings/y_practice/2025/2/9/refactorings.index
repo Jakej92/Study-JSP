@@ -1,0 +1,6 @@
+1740550591694	Rename package 'com.app.controller.member'
+1740550686974	Rename resource 'join.xml'
+1740550701811	Delete element
+1740556937300	Move 'join.jsp' to 'admin'
+1740556939077	Move 'login.jsp' to 'admin'
+1740557817969	Delete element
